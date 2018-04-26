@@ -19,6 +19,7 @@ public class RentalInfo {
     private String rentalDate;
     @Column(nullable = false)
     private String dueDate;
+    private boolean overdue;
     @OneToOne
     @JoinColumn(name = "film_filmID")
     private Film film;
@@ -31,6 +32,7 @@ public class RentalInfo {
         this.film =  film;
         this.rentalDate = formatter.format(LocalDate.now());
         this.dueDate = formatter.format(LocalDate.now().plusDays(1));
+        this.overdue = false;
     }
 
     public Long getId() {
@@ -71,5 +73,13 @@ public class RentalInfo {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public boolean isOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        this.overdue = overdue;
     }
 }

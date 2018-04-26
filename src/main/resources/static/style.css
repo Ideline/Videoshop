@@ -957,3 +957,20 @@ footer p {
     justify-content: center;
     align-items: center;
 }
+
+.black {
+    color: black;
+}
+
+.overDue {
+    color: red;
+    font-weight: bold;
+}
+
+th, td {
+    padding-left: 10px;
+}
+
+.margin-right-10 {
+    margin-right: 10px;
+}

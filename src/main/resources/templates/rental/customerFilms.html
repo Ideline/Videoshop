@@ -100,10 +100,11 @@
                 <td th:text="${film.getFilm().getFilmID()}"></td>
                 <td th:text="${film.getFilm().getFilmInfo().getTitle()}"></td>
                 <td th:text="${film.getRentalDate()}"></td>
-                <td th:text="${film.getDueDate()}"></td> <!-- lägg till klass så att texten blir röd om försenad -->
+                <td th:text="${film.getDueDate()}"
+                    th:classappend="${film.isOverdue()} ? overDue : black" ></td>
                 <td>
                     <div class="flex-center">
-                        <a class="filmButton right" th:href="@{'/rentalInfo/returnFilm/' + ${film.getFilm().getFilmID()}}"><span>ÅTER</span></a>
+                        <a class="filmButton margin-right-10" th:href="@{'/rentalInfo/returnFilm/' + ${film.getFilm().getFilmID()}}"><span>ÅTER</span></a>
                     </div>
                 </td>
             </tr>

@@ -6,10 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import se.video_shop.rental_system.rental_system.entities.Customer;
+import se.video_shop.rental_system.rental_system.entities.RentalInfo;
 import se.video_shop.rental_system.rental_system.repositories.CustomerRepository;
 import se.video_shop.rental_system.rental_system.repositories.RentalHistoryRepository;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/rentalHistory")

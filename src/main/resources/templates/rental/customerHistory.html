@@ -100,8 +100,9 @@
                 <td th:text="${film.getFilm().getFilmID()}"></td>
                 <td th:text="${film.getFilm().getFilmInfo().getTitle()}"></td>
                 <td th:text="${film.getRentalDate()}"></td>
-                <td th:text="${film.getDueDate()}"></td> <!-- lägg till klass så att texten blir röd om försenad -->
-                <td th:text="${film.getReturnDate()}"></td> <!-- lägg till klass så att texten blir röd om försenad -->
+                <td th:text="${film.getDueDate()}"></td>
+                <td th:text="${film.getReturnDate()}"
+                    th:classappend="${film.isOverdue()} ? overDue : black"></td> <!-- lägg till klass så att texten blir röd om försenad -->
             </tr>
         </table>
     </section>

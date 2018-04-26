@@ -18,6 +18,7 @@ public class RentalHistory {
     private String dueDate;
     @Column(nullable = false)
     private String returnDate;
+    private boolean overdue;
     @OneToOne
     @JoinColumn(name = "film_filmID")
     private Film film;
@@ -25,14 +26,15 @@ public class RentalHistory {
     protected RentalHistory(){}
 
     public RentalHistory(Long id, Customer customer, String rentalDate, String dueDate,
-                         Film film) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY MM dd");
+                         Film film, Boolean overdue) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
         this.id = id;
         this.customer = customer;
         this.rentalDate = rentalDate;
         this.dueDate = dueDate;
         this.returnDate = formatter.format(LocalDate.now());
         this.film = film;
+        this.overdue = overdue;
     }
 
     public Long getId() {
@@ -81,5 +83,13 @@ public class RentalHistory {
 
     public void setFilm(Film film) {
         this.film = film;
+    }
+
+    public boolean isOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        this.overdue = overdue;
     }
 }

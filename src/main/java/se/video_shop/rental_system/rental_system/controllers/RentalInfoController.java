@@ -27,6 +27,8 @@ import se.video_shop.rental_system.rental_system.repositories.RentalInfoReposito
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Handler;
 
@@ -62,8 +64,25 @@ public class RentalInfoController {
         // TODO: finns det inget smidigare sätt att updatera en sessions attribute?
         Customer c = (Customer)session.getAttribute("customer");
         String ssn = c.getSocialSecurityNumber();
+        // TODO: behövs kanske inte? Testa!
         session.removeAttribute("customer");
         c.setRentals(customerRepository.findBySocialSecurityNumber(ssn).getRentals());
+
+        LocalDate today = LocalDate.now();
+        List<RentalInfo> films = c.getRentals();
+
+        for(RentalInfo ri : films){
+
+            String dateString = ri.getDueDate();
+            LocalDate dueDate = LocalDate.parse(dateString);
+
+            if(dueDate.compareTo(today) < 0){
+                ri.setOverdue(true);
+            }
+        }
+
+        customerRepository.save(c);
+
         session.setAttribute("customer", c);
 
         return "rental/customerFilms";
@@ -76,7 +95,8 @@ public class RentalInfoController {
 
         RentalInfo rentalInfo = rentalInfoRepository.findByFilm_FilmID(filmID);
         RentalHistory rentalHistory = new RentalHistory(rentalInfo.getId(), rentalInfo.getCustomer(),
-                rentalInfo.getRentalDate(), rentalInfo.getDueDate(), rentalInfo.getFilm());
+                rentalInfo.getRentalDate(), rentalInfo.getDueDate(), rentalInfo.getFilm(),
+                rentalInfo.isOverdue());
 
         System.out.println("Lämnar tillbakafilm");
         rentalHistoryRepository.save(rentalHistory);
