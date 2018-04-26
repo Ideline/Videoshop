@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table>
+    <th:block th:each="customer : ${customers}">
+        <tr>
+            <td th:text="${customer.firstName}">...</td>
+            <td th:text="${customer.lastName}">...</td>
+        </tr>
+    </th:block>
+</table>
+
+</body>
+</html>

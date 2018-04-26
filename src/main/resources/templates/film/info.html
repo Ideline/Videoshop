@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:form="http://www.w3.org/1999/xhtml"
+      layout:decorate="layout/main">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${filmInfo.getTitle()}"></title>
+    <link rel="stylesheet" href="/jquery-confirm.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="flex-center">
+        <img class="headerLogo" src="/images/bortakvall_logo.jpg" alt="bild saknas">
+    </div>
+    <div class="test2">
+        <div class="flex-row">
+            <div class="customerContainer">
+                <div th:if="${session.customer != null}" class="just-flex">
+                    <div>
+                        <img class="customerMenuIcon" src="/images/customerMenu7.png" alt="bild saknas">
+                    </div>
+                    <div class="costumerMenu"
+                         th:text="${session.customer.firstName} + ' ' + ${session.customer.lastName} + ' ' + ${session.customer.socialSecurityNumber}">
+                        Customer
+                    </div>
+                </div>
+                <div class="popUpImgContainer hide">
+                    <img class="popUpImg" src="/images/popupImg.png" alt="bild saknas">
+                    <div class="test">
+                        <div class="dropDownMenu">
+                            <div class="dropPart">
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/customer/edit}">
+                                        <div>
+                                            <img src="/images/menuIcon11.png" alt="bild saknas">
+                                        </div>
+                                        <div>Redigera</div>
+                                        <div>Profil</div>
+                                    </a>
+                                </div>
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalInfo/rentFilm}">
+                                        <div>
+                                            <img src="/images/menuIcon8.png" alt="bild saknas">
+                                        </div>
+                                        <div>Hyr film</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropPart">
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalInfo/customerFilms}">
+                                        <div>
+                                            <img src="/images/menuIcon9.png" alt="bild saknas">
+                                        </div>
+                                        <div>Aktuella</div>
+                                        <div>hyrda filmer</div>
+                                    </a>
+                                </div>
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalHistory/customerFilms}">
+                                        <div>
+                                            <img src="/images/menuIcon7.png" alt="bild saknas">
+                                        </div>
+                                        <div>Historik</div>
+                                        <div>hyrda filmer</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <a class="link logOutCustomer" th:href="@{/customer/logout}">
+                                « Logga ut kund »
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="infoMain">
+    <nav class="navigationField2">
+        <div class="headerLinks">
+            <div><a class="headerLink" th:href="@{/customer/searchandregister}">KUND</a></div>
+            <div><a class="headerLink" th:href="@{/film/search}">SÖK FILM</a></div>
+            <div><a class="headerLink" th:href="@{/film/register}">NY FILM</a></div>
+            <div><a class="headerLink" th:href="@{/film/overdue}">FÖRSENADE FILMER</a></div>
+        </div>
+    </nav>
+    <section class="flex-column">
+        <nav class="page-navigation">
+            <div><a class="nextFilm" th:href="@{'../film/' + ${prevFilmID}}">« Föregående</a></div>
+            <div><a class="nextFilm" th:href="@{'../film/' + ${nextFilmID}}">Nästa »</a></div>
+        </nav>
+        <div class="filmInfoSection">
+            <div class="imageContainer">
+                <img class="filmImage" th:src="${filmInfo.getImageUrl()}"
+                     alt="bild saknas"/>
+                <!--<a class="searchRentButton" th:href="@{/film/manage}">HANTERA FILM</a>-->
+            </div>
+            <div class="filmInfo">
+                <div class="flex-row">
+                    <div class="filmTitle" th:text="${filmInfo.getTitle()}"></div>
+                </div>
+                <h3>Beskrivning</h3>
+                <div th:text="${filmInfo.getDescription()}"></div>
+                <h3>Fakta</h3>
+                <div class="factContainer">
+                    <h4>Kategori:</h4>
+                    <div th:text="${filmInfo.getGenre()}"></div>
+                </div>
+                <div class="factContainer">
+                    <h4>Åldersgräns:</h4>
+                    <div th:text="${filmInfo.getAgeLimit()}"></div>
+                </div>
+                <div class="factContainer">
+                    <h4>Releasedatum:</h4>
+                    <div th:text="${filmInfo.getReleaseDate()}"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="addFilmContainer">
+                <form class="newFilmForm" method="POST" th:object="${newFilmForm}">
+                    <!--<div class="margin-bottom">Lägg till nytt exemplar:</div>-->
+                    <div class="flex">
+                        <div class="radioContainer" th:each="format : ${allFormats}">
+                            <input class="option-button radio" type="radio" th:field="*{format}" th:value="${format}"/>
+                            <label class="search-radio-text" th:for="${#ids.prev('format')}"
+                                   th:text="${format}">...</label>
+                        </div>
+                    </div>
+                    <span class="alert"
+                          th:if="${#fields.hasErrors('format')}"
+                          th:errors="*{format}">Fel fel</span>
+                    <button type="submit" class="addButton margin-bottom">+</button>
+                </form>
+            </div>
+            <div class="filmInstances" th:if="${films}">
+                <table class="filmsTable">
+                    <tr>
+                        <th class="left">FilmID</th>
+                        <th class="left">Titel</th>
+                        <th class="left">Format</th>
+                        <th class="center">Status</th>
+                        <th class="right"></th>
+                    </tr>
+                    <tr th:each="film , rowStat : ${filmInfo.getFilms()}"
+                        th:class="${rowStat.odd}? 'odd films' : 'even films'" class="odd">
+                        <td th:text="${film.getFilmID()}"></td>
+                        <td th:text="${filmInfo.getTitle()}"></td>
+                        <td th:text="${film.getFormat()}"></td>
+                        <td class="text-center">
+                            <div th:if="${film.getRentalInfo() != null}"
+                                 th:text="'Åter: ' + ${film.getRentalInfo().getDueDate()}"></div>
+                            <div th:if="${film.getRentalInfo() == null}" class="flex-center">
+                                <a th:if="${session.customer != null}" class="filmButton right"
+                                   th:href="@{/rentalInfo/{productNumber}/rent/{filmID}(productNumber=${filmInfo.getProductNumber()}, filmID=${film.getFilmID()})}">
+                                    <span>Hyr film</span></a>
+                                <a th:if="${session.customer == null}" class="filmButton right"
+                                   th:href="@{/customer/createOrFind/{filmID}(filmID=${film.getFilmID()})}">
+                                    <span>Hyr film</span></a>
+                            </div>
+                        </td>
+                        <td class="right">
+                            <div class="flex-center">
+                                <a class="filmButton right deleteButton"
+                                   th:href="@{/film/{productNumber}/delete/{filmID}(productNumber=${filmInfo.getProductNumber()}, filmID=${film.getFilmID()})}">
+                                    <span>Ta bort</span></a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+<footer>
+    <p>© 2018 BORTAKVÄLL </p>
+</footer>
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/jquery-confirm.min.js"></script>
+<script src="/code.js"></script>
+</body>
+</html>

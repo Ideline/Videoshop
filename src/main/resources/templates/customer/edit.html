@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main">
+<head>
+    <meta charset="UTF-8">
+    <title>Ändra kunduppgifter</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="flex-center">
+        <img class="headerLogo" src="/images/bortakvall_logo.jpg" alt="bild saknas">
+    </div>
+    <div class="test2">
+        <div class="flex-row">
+            <div class="customerContainer">
+                <div th:if="${session.customer != null}" class="just-flex">
+                    <div>
+                        <img class="customerMenuIcon" src="/images/customerMenu7.png" alt="bild saknas">
+                    </div>
+                    <div class="costumerMenu"
+                         th:text="${session.customer.firstName} + ' ' + ${session.customer.lastName} + ' ' + ${session.customer.socialSecurityNumber}">
+                        Customer
+                    </div>
+                </div>
+                <div class="popUpImgContainer hide">
+                    <img class="popUpImg" src="/images/popupImg.png" alt="bild saknas">
+                    <div class="test">
+                        <div class="dropDownMenu">
+                            <div class="dropPart">
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/customer/edit}">
+                                        <div>
+                                            <img src="/images/menuIcon11.png" alt="bild saknas">
+                                        </div>
+                                        <div>Redigera</div>
+                                        <div>Profil</div>
+                                    </a>
+                                </div>
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalInfo/rentFilm}">
+                                        <div>
+                                            <img src="/images/menuIcon8.png" alt="bild saknas">
+                                        </div>
+                                        <div>Hyr film</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropPart">
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalInfo/customerFilms}">
+                                        <div>
+                                            <img src="/images/menuIcon9.png" alt="bild saknas">
+                                        </div>
+                                        <div>Aktuella</div>
+                                        <div>hyrda filmer</div>
+                                    </a>
+                                </div>
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalHistory/customerFilms}">
+                                        <div>
+                                            <img src="/images/menuIcon7.png" alt="bild saknas">
+                                        </div>
+                                        <div>Historik</div>
+                                        <div>hyrda filmer</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <a class="link logOutCustomer" th:href="@{/customer/logout}">
+                                « Logga ut kund »
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="infoMain">
+    <nav class="navigationField2">
+        <div class="headerLinks">
+            <div><a class="headerLink" th:href="@{/customer/searchandregister}">KUND</a></div>
+            <div><a class="headerLink" th:href="@{/film/search}">SÖK FILM</a></div>
+            <div><a class="headerLink" th:href="@{/film/register}">NY FILM</a></div>
+            <div><a class="headerLink" th:href="@{/film/overdue}">FÖRSENADE FILMER</a></div>
+        </div>
+    </nav>
+        <section class="formSection">
+            <div class="frame">
+                <div layout:fragment="content">
+                    <div>
+                        <div class="">
+                            <form method="POST" th:object="${registrationForm}">
+                                <p>ÄNDRA KUNDUPPGIFTER</p>
+                                <div class="formContent">
+                                    <div class="formColumns">
+                                        <div class="form-group">
+                                            <label th:for="socialSecurityNumber">Personnummer*</label>
+                                            <input type="text" class="form-input"
+                                                   th:id="socialSecurityNumber" th:name="socialSecurityNumber" title="socialSecurityNumber"
+                                                   placeholder="Personnummer" th:value="${session.customer.socialSecurityNumber}" />
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('socialSecurityNumber')}"
+                                                  th:errors="*{socialSecurityNumber}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="firstName">Förnamn*</label>
+                                            <input type="text" th:value="${session.customer.firstName}" class="form-input"
+                                                   th:id="firstName" th:name="firstName" placeholder="Förnamn">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="lastName">Efternamn*</label>
+                                            <input type="text" th:value="${session.customer.lastName}" class="form-input" th:id="lastName"
+                                                   th:name="lastName" placeholder="Efternamn">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="address">Adress*</label>
+                                            <input type="text" th:value="${session.customer.address}" class="form-input" th:id="address"
+                                                   th:name="address" placeholder="Adress">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('address')}"
+                                                  th:errors="*{address}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="zipCode">Postnummer*</label>
+                                            <input type="text" th:value="${session.customer.zipCode}" class="form-input" th:id="zipCode"
+                                                   th:name="zipCode" placeholder="Postnummer">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('zipCode')}"
+                                                  th:errors="*{zipCode}">Fel fel</span>
+                                        </div>
+                                    </div>
+                                    <div class="formColumns">
+                                        <div class="form-group">
+                                            <label th:for="city">Ort*</label>
+                                            <input type="text" th:value="${session.customer.city}" class="form-input" th:id="city"
+                                                   th:name="city" placeholder="Ort">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('city')}"
+                                                  th:errors="*{city}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="country">Land*</label>
+                                            <input type="text" th:value="${session.customer.country}" class="form-input" th:id="country"
+                                                   th:name="country" placeholder="Land">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('country')}"
+                                                  th:errors="*{country}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="phone">Telefonnummer*</label>
+                                            <input type="text" th:value="${session.customer.phone}" class="form-input" th:id="phone"
+                                                   th:name="phone" placeholder="Telefonnummer">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('phone')}"
+                                                  th:errors="*{phone}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label th:for="email">Email address</label>
+                                            <input type="email" th:value="${session.customer.email}" class="form-input" th:id="email"
+                                                   th:name="email" placeholder="Enter email">
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="submit">Spara</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<footer>
+    <p>© 2018 BORTAKVÄLL </p>
+</footer>
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/jquery-confirm.min.js"></script>
+<script src="/code.js"></script>
+</body>
+</html>

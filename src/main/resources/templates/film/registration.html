@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrera ny filminfo</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="flex-center">
+        <img class="headerLogo" src="/images/bortakvall_logo.jpg" alt="bild saknas">
+    </div>
+    <div class="test2">
+        <div class="flex-row">
+            <div class="customerContainer">
+                <div th:if="${session.customer != null}" class="just-flex">
+                    <div>
+                        <img class="customerMenuIcon" src="/images/customerMenu7.png" alt="bild saknas">
+                    </div>
+                    <div class="costumerMenu"
+                         th:text="${session.customer.firstName} + ' ' + ${session.customer.lastName} + ' ' + ${session.customer.socialSecurityNumber}">
+                        Customer
+                    </div>
+                </div>
+                <div class="popUpImgContainer hide">
+                    <img class="popUpImg" src="/images/popupImg.png" alt="bild saknas">
+                    <div class="test">
+                        <div class="dropDownMenu">
+                            <div class="dropPart">
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/customer/edit}">
+                                        <div>
+                                            <img src="/images/menuIcon11.png" alt="bild saknas">
+                                        </div>
+                                        <div>Redigera</div>
+                                        <div>Profil</div>
+                                    </a>
+                                </div>
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalInfo/rentFilm}">
+                                        <div>
+                                            <img src="/images/menuIcon8.png" alt="bild saknas">
+                                        </div>
+                                        <div>Hyr film</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropPart">
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalInfo/customerFilms}">
+                                        <div>
+                                            <img src="/images/menuIcon9.png" alt="bild saknas">
+                                        </div>
+                                        <div>Aktuella</div>
+                                        <div>hyrda filmer</div>
+                                    </a>
+                                </div>
+                                <div class="flex-column-center">
+                                    <a class="link" th:href="@{/rentalHistory/customerFilms}">
+                                        <div>
+                                            <img src="/images/menuIcon7.png" alt="bild saknas">
+                                        </div>
+                                        <div>Historik</div>
+                                        <div>hyrda filmer</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <a class="link logOutCustomer" th:href="@{/customer/logout}">
+                                « Logga ut kund »
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="infoMain">
+    <nav class="navigationField2">
+        <div class="headerLinks">
+            <div><a class="headerLink" th:href="@{/customer/searchandregister}">KUND</a></div>
+            <div><a class="headerLink" th:href="@{/film/search}">SÖK FILM</a></div>
+            <div><a class="headerLink" th:href="@{/film/register}">NY FILM</a></div>
+            <div><a class="headerLink" th:href="@{/film/overdue}">FÖRSENADE FILMER</a></div>
+        </div>
+    </nav>
+        <section class="formSection">
+            <div class="frame">
+                <div layout:fragment="content">
+                    <div>
+                        <div class="">
+                            <form action="#" th:action="@{/register}" th:object="${filmInfoForm}" method="POST">
+                                <p>REGISTRERA NY FILM</p>
+                                <div class="formContent">
+                                    <div class="formColumns">
+                                        <div class="form-group">
+                                            <label>Filmtitel*</label>
+                                            <input type="text" th:field="*{title}" class="form-input" placeholder="Filmtitel" />
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('title')}"
+                                                  th:errors="*{title}">Fel fel</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Releasedatum</label>
+                                            <input type="date" th:field="*{releaseDate}" class="form-input no-spin" placeholder="Releasedatum"/>
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('releaseDate')}"
+                                                  th:errors="*{releaseDate}">Fel fel</span>
+                                        </div>
+                                        <div class="form-row-group">
+                                            <div class="form-group">
+                                                <label>Genre</label>
+                                                <select class="selectOptions" th:field="*{genre}">
+                                                    <option th:each="a : ${allGenres}" th:value="${a}" th:text="${a}" >...</option>
+                                                </select>
+                                                <span class="alert"
+                                                      th:if="${#fields.hasErrors('genre')}"
+                                                      th:errors="*{genre}">Fel fel</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Åldersgräns</label>
+                                                <input type="text" th:field="*{ageLimit}" class="form-input" placeholder="Åldersgräns">
+                                                <span class="alert"
+                                                      th:if="${#fields.hasErrors('ageLimit')}"
+                                                      th:errors="*{ageLimit}">Fel fel</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-group">
+                                                <label>Bildadress</label>
+                                                <input type="text" th:field="*{imageUrl}" class="form-input" placeholder="Bildadress">
+                                                <span class="alert"
+                                                      th:if="${#fields.hasErrors('imageUrl')}"
+                                                      th:errors="*{imageUrl}">Fel fel</span>
+                                            </div>
+                                            <!--<div class="form-group">-->
+                                                <!--<p>Format</p>-->
+                                                <!--<div class="flex">-->
+                                                    <!--<div class="radioContainer" th:each="a : ${allFormats}">-->
+                                                        <!--<input class="form-radio" type="radio" th:field="*{format}" th:value="${a}" />-->
+                                                        <!--<label class="radio-text" th:for="${#ids.prev('format')}" th:text="${a}">...</label>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<span class="alert"-->
+                                                      <!--th:if="${#fields.hasErrors('format')}"-->
+                                                      <!--th:errors="*{format}">Fel fel</span>-->
+                                            <!--</div>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Beskrivning</label>
+                                            <textarea type="text" th:field="*{description}" class="form-input" placeholder="Beskrivning"></textarea>
+                                            <span class="alert"
+                                                  th:if="${#fields.hasErrors('description')}"
+                                                  th:errors="*{description}">Fel fel</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="submit filmButton">Registrera</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<footer>
+    <p>© 2018 BORTAKVÄLL </p>
+</footer>
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/jquery-confirm.min.js"></script>
+<script src="/code.js"></script>
+</body>
+</html>
