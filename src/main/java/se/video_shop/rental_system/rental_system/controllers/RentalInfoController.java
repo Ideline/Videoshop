@@ -9,10 +9,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import se.video_shop.rental_system.rental_system.entities.Customer;
 import se.video_shop.rental_system.rental_system.entities.Film;
 import se.video_shop.rental_system.rental_system.entities.RentalHistory;
@@ -29,6 +26,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
 
@@ -123,13 +121,37 @@ public class RentalInfoController {
     }
 
     @GetMapping("/rentFilm")
-    public String getRentFilmPage(FilmRentForm filmRentForm) {
+    public String getRentFilmPage(FilmRentForm filmRentForm, HttpSession session) {
 
         return "rental/rentPage";
     }
 
+    @GetMapping("/validate/{filmID}")
+    public String validateRental(@RequestParam int filmID, HttpSession session) {
+
+        RentalInfo rentalInfo = rentalInfoRepository.findByFilm_FilmID(filmID);
+
+        // TODO: vad returneras om det inte finns någon film?
+        if(filmRepository.findByFilmID(filmID) != null){
+
+            session.setAttribute("exists", false);
+        }
+        else if (rentalInfo == null) {
+
+            session.setAttribute("exists", true);
+            session.setAttribute("available", true);
+        } else if(rentalInfo != null){
+
+            session.setAttribute("exists", true);
+            session.setAttribute("available", false);
+        }
+
+        // TODO: vad ska returneras här??
+        return "/rentalInfo/rentFilm";
+    }
+
     @PostMapping("/rentFilm")
-    public String rentFilm(@Valid FilmRentForm filmRentForm, BindingResult result, HttpSession session) {
+    public String rentFilm(@Valid FilmRentForm filmRentForm, BindingResult result, HttpSession session, Model model) {
 
         filmRentForm.validate(filmRentForm, result);
 
@@ -140,6 +162,8 @@ public class RentalInfoController {
         Film rentedFilm = filmRepository.findByFilmID(filmRentForm.getFilmID());
         RentalInfo rentalInfo = rentalInfoRepository.findByFilm_FilmID(rentedFilm.getFilmID());
 
+
+
         if (rentalInfo == null) {
 
             Customer customer = (Customer)session.getAttribute("customer");
@@ -148,15 +172,47 @@ public class RentalInfoController {
             rentalInfoRepository.save(ri);
             session.removeAttribute("filmID");
             // TODO: validera att filmID finns!!
+            // TODO : fixa confirm
             // TODO: fixa meddelande som bekräftar att filmen är uthyrd
+            session.setAttribute("available", true);
 
             return "redirect:/rentalInfo/rentFilm";
-        } else {
-            // TODO: fixa så att felmeddelande skrivs ut
-            System.out.println("Filmen är redan uthyrd!!!");
+        } else if(rentalInfo != null){
+
+            session.setAttribute("available", false);
+            return "redirect:/rentalInfo/rentFilm";
+
         }
 
-        return "rentalInfo/rentFilm";
+        session.setAttribute("available", true);
+        return "redirect:/rentalInfo/rentFilm";
+//        return "rentalInfo/rentFilm";
+    }
+
+
+
+    @GetMapping("/overdue")
+    public String getOverdueFilms(Model model) {
+
+        LocalDate today = LocalDate.now();
+        List<RentalInfo> films = rentalInfoRepository.findAll();
+        List<RentalInfo> overdueFilms = new ArrayList<>();
+
+        for(RentalInfo ri : films){
+
+            String dateString = ri.getDueDate();
+            LocalDate dueDate = LocalDate.parse(dateString);
+
+            if(dueDate.compareTo(today) < 0){
+                ri.setOverdue(true);
+                rentalInfoRepository.save(ri);
+                overdueFilms.add(ri);
+            }
+        }
+
+        model.addAttribute("overdueFilms", overdueFilms);
+
+        return "rental/overDueFilms";
     }
 
 }

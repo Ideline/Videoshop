@@ -14,11 +14,8 @@ public interface RentalInfoRepository extends JpaRepository<RentalInfo, Long> {
     List<RentalInfo> findAllByCustomer_SocialSecurityNumber(String ssn);
     RentalInfo findByFilm_FilmID(int filmID);
 
-//    @Modifying
-//    @Transactional
-//    Long deleteById(long id);
-//
     @Modifying
-//    @Transactional
     Long deleteRentalInfoById(Long id);
+
+    List<RentalInfo> findAllByOverdue(boolean overdue);
 }

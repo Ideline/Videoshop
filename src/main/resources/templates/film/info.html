@@ -85,7 +85,7 @@
             <div><a class="headerLink" th:href="@{/customer/searchandregister}">KUND</a></div>
             <div><a class="headerLink" th:href="@{/film/search}">SÖK FILM</a></div>
             <div><a class="headerLink" th:href="@{/film/register}">NY FILM</a></div>
-            <div><a class="headerLink" th:href="@{/film/overdue}">FÖRSENADE FILMER</a></div>
+            <div><a class="headerLink" th:href="@{/rentalInfo/overdue}">FÖRSENADE FILMER</a></div>
         </div>
     </nav>
     <section class="flex-column">
@@ -95,9 +95,7 @@
         </nav>
         <div class="filmInfoSection">
             <div class="imageContainer">
-                <img class="filmImage" th:src="${filmInfo.getImageUrl()}"
-                     alt="bild saknas"/>
-                <!--<a class="searchRentButton" th:href="@{/film/manage}">HANTERA FILM</a>-->
+                <img class="filmImage" th:src="${filmInfo.getImageUrl()}" alt="bild saknas"/>
             </div>
             <div class="filmInfo">
                 <div class="flex-row">
@@ -123,10 +121,10 @@
         <div>
             <div class="addFilmContainer">
                 <form class="newFilmForm" method="POST" th:object="${newFilmForm}">
-                    <!--<div class="margin-bottom">Lägg till nytt exemplar:</div>-->
                     <div class="flex">
                         <div class="radioContainer" th:each="format : ${allFormats}">
-                            <input class="option-button radio" type="radio" th:field="*{format}" th:value="${format}"/>
+                            <input class="option-button radio" type="radio" th:field="*{format}"
+                                   th:value="${format}"/>
                             <label class="search-radio-text" th:for="${#ids.prev('format')}"
                                    th:text="${format}">...</label>
                         </div>

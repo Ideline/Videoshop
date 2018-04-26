@@ -107,148 +107,6 @@ public class FilmController {
         return "film/search";
     }
 
-//    @PostMapping("/search")
-//    public String search(@RequestParam (required = false) Integer page, @Valid FilmSearchForm filmSearchForm, BindingResult result, Model model) {
-//
-//        filmSearchForm.validate(filmSearchForm, result);
-//
-//        if (result.hasErrors()) {
-//            return "film/search";
-//        }
-//        List<FilmInfo> searchResults = new ArrayList<>();
-//
-//        Integer productNumber = filmSearchForm.getProductNumber();
-//        String title = filmSearchForm.getTitle();
-//        String genre = filmSearchForm.getGenre();
-//        String searchWord = "";
-//
-//        Page<FilmInfo> found;
-//
-//        if (productNumber != null) {
-//
-//            searchWord = "Produktnummer " + productNumber;
-////            searchResults.add(filmInfoRepository.getOne(productNumber));
-////            model.addAttribute("searchWords", searchWord);
-////            model.addAttribute("searchResults", searchResults);
-//
-//            found = filmInfoRepository.findByProductNumber(productNumber,  PageRequest.of(page != null ? page : 0, 10));
-//            model.addAttribute("searchResult", found);
-//            model.addAttribute("searchWord", searchWord);
-//
-//            return "/film/searchResult";
-//        }
-//
-//        else if (genre != null) {
-//            found = filmInfoRepository.findAllByGenre(genre, PageRequest.of(page != null ? page : 0, 10));
-//            searchWord = genre;
-//            model.addAttribute("searchResults", found);
-//            model.addAttribute("searchWord", searchWord);
-//
-//            return "/film/searchResult";
-//        }
-////        if (!title.equals("") && genre != null) {
-////
-////            searchResults = filmInfoRepository.findByTitleContainsAndGenre(title, genre);
-////            searchWord = title + genre;
-////            model.addAttribute("searchResults", searchResults);
-////            model.addAttribute("searchWord", searchWord);
-////
-////            return "/film/searchResult";
-////        } else if (!title.equals("")) {
-////            searchResults = filmInfoRepository.findByTitleContains(title);
-////            searchWord = title;
-////            model.addAttribute("searchResults", searchResults);
-////            model.addAttribute("searchWord", searchWord);
-////
-////            return "/film/searchResult";
-////        } else if (genre != null) {
-////            searchResults = filmInfoRepository.findAllByGenre(genre);
-////            searchWord = genre;
-////            model.addAttribute("searchResults", searchResults);
-////            model.addAttribute("searchWord", searchWord);
-////
-////            return "/film/searchResult";
-////        }
-//        return "redirect:/film/search";
-//    }
-
-//    @PostMapping("/search")
-//    public String search(@RequestParam(required = false) Integer page, @Valid FilmSearchForm filmSearchForm, BindingResult result, Model model) {
-//
-//        filmSearchForm.validate(filmSearchForm, result);
-//
-//        if (result.hasErrors()) {
-//            return "film/search";
-//        }
-//        List<FilmInfo> searchResults = new ArrayList<>();
-//
-//        Integer productNumber = filmSearchForm.getProductNumber();
-//        String title = filmSearchForm.getTitle();
-//        String genre = filmSearchForm.getGenre();
-//        String searchWord = "";
-//
-//        Page<FilmInfo> found;
-//
-//        if (productNumber != null) {
-//
-//            searchWord = "Produktnummer " + productNumber;
-////            searchResults.add(filmInfoRepository.getOne(productNumber));
-////            model.addAttribute("searchWords", searchWord);
-////            model.addAttribute("searchResults", searchResults);
-//
-//            found = filmInfoRepository.findByProductNumber(productNumber, PageRequest.of(page != null ? page : 0, 10));
-//            model.addAttribute("searchResult", found);
-//            model.addAttribute("searchWord", searchWord);
-//
-//            return "/film/searchResult";
-//        } else if (genre != null) {
-//            found = filmInfoRepository.findAllByGenre(genre, PageRequest.of(page != null ? page : 0, 10));
-//            searchWord = genre;
-//            model.addAttribute("searchResults", found);
-//            model.addAttribute("searchWord", searchWord);
-//
-//            return "/film/searchResult";
-//        }
-////        if (!title.equals("") && genre != null) {
-////
-////            searchResults = filmInfoRepository.findByTitleContainsAndGenre(title, genre);
-////            searchWord = title + genre;
-////            model.addAttribute("searchResults", searchResults);
-////            model.addAttribute("searchWord", searchWord);
-////
-////            return "/film/searchResult";
-////        } else if (!title.equals("")) {
-////            searchResults = filmInfoRepository.findByTitleContains(title);
-////            searchWord = title;
-////            model.addAttribute("searchResults", searchResults);
-////            model.addAttribute("searchWord", searchWord);
-////
-////            return "/film/searchResult";
-////        } else if (genre != null) {
-////            searchResults = filmInfoRepository.findAllByGenre(genre);
-////            searchWord = genre;
-////            model.addAttribute("searchResults", searchResults);
-////            model.addAttribute("searchWord", searchWord);
-////
-////            return "/film/searchResult";
-////        }
-//        return "redirect:/film/search";
-//    }
-
-//    public List<FilmInfo> addSearchResults(List<FilmInfo> searchResults, FilmSearchForm filmSearchForm) {
-//
-//        String[] array = filmSearchForm.getGenre().split(",");
-//        List<String> list = new ArrayList<>(Arrays.asList(array));
-//
-//        for (String s : list) {
-//            for (FilmInfo fi : filmInfoRepository.findAllByGenre(s)) {
-//                searchResults.add(fi);
-//            }
-//        }
-//
-//        return searchResults;
-//    }
-
     @GetMapping("/searchresult")
     public String getSearchResult(@RequestParam(required = false) Integer productNumber,
                                   @RequestParam(required = false) String genre,
@@ -261,23 +119,12 @@ public class FilmController {
         if (productNumber != null) {
 
             searchWord = "Produktnummer: " + productNumber;
-//            List<FilmInfo> filmInfoList = getResultList(genre, title, productNumber, 1);
-//            Object filmInfoPage = getPageResults(filmInfoList, page);
-//            model.addAttribute("searchResults", filmInfoPage);
-//            model.addAttribute("searchWord", searchWord);
-
             Page<FilmInfo> filmInfoPage = getResultList(genre, title, productNumber, page, 1);
             addToModel(filmInfoPage, searchWord, model, httpServletRequest);
 
         } else if (!title.equals("") && genre != null) {
 
             searchWord = getSearchWords(genre, title);
-//            List<FilmInfo> filmInfoList = getResultList(genre, title, productNumber, 2);
-//            Object filmInfoPage = getPageResults(filmInfoList, page);
-//            model.addAttribute("searchResults", filmInfoPage);
-//            model.addAttribute("searchWord", searchWord);
-
-
             Page<FilmInfo> filmInfoPage = getResultList(genre, title, productNumber, page, 2);
             addToModel(filmInfoPage, searchWord, model, httpServletRequest);
 
@@ -285,30 +132,12 @@ public class FilmController {
         } else if (genre != null) {
 
             searchWord = getSearchWords(genre, title);
-            //Page<FilmInfo> filmInfoPage = filmInfoRepository.findAllByGenre(genre, PageRequest.of(page != null ? page : 0, 10));
-            //List<FilmInfo> filmInfoList = getResultList(genre, title, productNumber, 3);
-            //Object filmInfoPage = getPageResults(filmInfoList, page);
-
-
-//            String[] list = genre.split(",");
-//            List<String> genres = new ArrayList<>();
-//            for(String s : list){
-//                genres.add(s);
-//            }
-//
-//            Page<FilmInfo> filmInfoPage = filmInfoRepository.findAllByGenreIn(genres, PageRequest.of(page != null ? page : 0, 10));
-
             Page<FilmInfo> filmInfoPage = getResultList(genre, title, productNumber, page, 3);
             addToModel(filmInfoPage, searchWord, model, httpServletRequest);
 
         } else if (!title.equals("")) {
 
             searchWord = getSearchWords(genre, title);
-//            List<FilmInfo> filmInfoList = getResultList(genre, title, productNumber, 4);
-//            Object filmInfoPage = getPageResults(filmInfoList, page);
-//            Page<FilmInfo> filmInfoPage = FilmInfoRepository.findAllByGenreIn()
-//            addToModel(filmInfoPage, searchWord, model);
-
             Page<FilmInfo> filmInfoPage = getResultList(genre, title, productNumber, page, 4);
             addToModel(filmInfoPage, searchWord, model, httpServletRequest);
         }
@@ -320,17 +149,18 @@ public class FilmController {
 
     private void addToModel(Page<FilmInfo> filmInfoPage, String searchWord, Model model, HttpServletRequest httpServletRequest) {
 
-
-        String url = httpServletRequest.getRequestURI() + "?" + httpServletRequest.getQueryString();
+        String query = httpServletRequest.getQueryString();
+        String url = httpServletRequest.getRequestURI() + "?" + query;
         url = url.replaceAll("[&?]page=\\d*", "");
 
-        String query = httpServletRequest.getQueryString();
-        int queryIndex = query.lastIndexOf("page=");
+        final String PAGE = "page=";
+        int queryIndex = query.lastIndexOf(PAGE);
         int pageIndex = 0;
         if(queryIndex > 0) {
+            queryIndex += PAGE.length();
             String pageIndexStr = query.substring(queryIndex);
             if(!pageIndexStr.equals("")) {
-                Integer.parseInt(pageIndexStr);
+                pageIndex = Integer.parseInt(pageIndexStr);
             }
         }
 

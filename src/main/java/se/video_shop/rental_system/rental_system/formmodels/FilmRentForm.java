@@ -40,7 +40,7 @@ public class FilmRentForm implements Validator {
 //
 //        if(rentalInfo != null){
 //
-//            errors.rejectValue("filmID", "validation_error.not_Available");
+//            errors.rejectValue("filmID", "validation_error.notavailable");
 //        }
     }
 }
