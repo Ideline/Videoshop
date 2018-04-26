@@ -126,40 +126,27 @@ public class RentalInfoController {
         return "rental/rentPage";
     }
 
-    @GetMapping("/validate/{filmID}")
-    public String validateRental(@RequestParam int filmID, HttpSession session) {
+    @GetMapping("/validate")
+    public String validateRental(@RequestParam int filmID, Model model) {
 
         RentalInfo rentalInfo = rentalInfoRepository.findByFilm_FilmID(filmID);
+        Film film = filmRepository.findByFilmID(filmID);
 
-        // TODO: vad returneras om det inte finns någon film?
-        if(filmRepository.findByFilmID(filmID) != null){
-
-            session.setAttribute("exists", false);
+        model.addAttribute("exists", film != null);
+        model.addAttribute("available", film != null && rentalInfo == null);
+        if(film != null) {
+            model.addAttribute("img", film.getFilmInfo().getImageUrl());
+            model.addAttribute("title", film.getFilmInfo().getTitle());
         }
-        else if (rentalInfo == null) {
+        model.addAttribute("filmID", filmID);
 
-            session.setAttribute("exists", true);
-            session.setAttribute("available", true);
-        } else if(rentalInfo != null){
-
-            session.setAttribute("exists", true);
-            session.setAttribute("available", false);
-        }
-
-        // TODO: vad ska returneras här??
-        return "/rentalInfo/rentFilm";
+        return "rental/rentPage";
     }
 
     @PostMapping("/rentFilm")
-    public String rentFilm(@Valid FilmRentForm filmRentForm, BindingResult result, HttpSession session, Model model) {
+    public String rentFilm(@RequestParam int filmID3, HttpSession session) {
 
-        filmRentForm.validate(filmRentForm, result);
-
-        if (result.hasErrors()) {
-            return "customer/registration";
-        }
-
-        Film rentedFilm = filmRepository.findByFilmID(filmRentForm.getFilmID());
+        Film rentedFilm = filmRepository.findByFilmID(filmID3);
         RentalInfo rentalInfo = rentalInfoRepository.findByFilm_FilmID(rentedFilm.getFilmID());
 
 
@@ -171,9 +158,6 @@ public class RentalInfoController {
             RentalInfo ri = new RentalInfo(rentedFilm, customer);
             rentalInfoRepository.save(ri);
             session.removeAttribute("filmID");
-            // TODO: validera att filmID finns!!
-            // TODO : fixa confirm
-            // TODO: fixa meddelande som bekräftar att filmen är uthyrd
             session.setAttribute("available", true);
 
             return "redirect:/rentalInfo/rentFilm";

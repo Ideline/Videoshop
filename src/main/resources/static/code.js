@@ -41,83 +41,24 @@
         content: "Är du säker på att du vill ta bort detta filmexemplaret",
         buttons: {
 
+            delete: {
+                btnClass: 'btn-orange',
+                text: 'Ta bort',
+                keys: ['enter'],
+                action: function () {
+                    location.href = this.$target.attr('href');
+                }
+            },
             cancel: {
                 text: 'Avbryt',
                 keys: ['esc'],
                 action: function () {
                     return true;
                 }
-            },
-            delete: {
-                text: 'Ta bort',
-                keys: ['enter'],
-                action: function () {
-                    location.href = this.$target.attr('href');
-                }
             }
         }
 
     });
-
-    // $('#rentButton').on('click', function (e) {
-    //
-    //     e.stopPropagation();
-    //     e.preventDefault();
-    //
-    //     if(notAvailable){
-    //         $.alert({
-    //             useBootstrap: false,
-    //             columnClass: 'small',
-    //             animationBounce: 2.0,
-    //             closeAnimation: 'scale',
-    //             type: 'orange',
-    //             theme: 'material',
-    //             title: 'VARNING!',
-    //             content: 'FILMEN ÄR REDAN UTHYRD',
-    //         });
-    //     }
-    //     else if(notExist){
-    //         $.alert({
-    //             useBootstrap: false,
-    //             columnClass: 'small',
-    //             animationBounce: 2.0,
-    //             closeAnimation: 'scale',
-    //             type: 'orange',
-    //             theme: 'material',
-    //             title: 'VARNING!',
-    //             content: 'FELAKTIGT FILM-ID',
-    //         });
-    //     }
-    //     else {
-    //         $.confirm({
-    //             title: 'BEKRÄFTA',
-    //             content: 'BILD HÄR OCH FILMTITEL',
-    //             buttons: {
-    //                 confirm: function () {
-    //                     $.alert('Confirmed!');
-    //                 },
-    //                 cancel: function () {
-    //                     $.alert('Canceled!');
-    //                 },
-    //                 somethingElse: {
-    //                     text: 'Something else',
-    //                     btnClass: 'btn-blue',
-    //                     keys: ['enter', 'shift'],
-    //                     action: function(){
-    //                         $.alert('Something else?');
-    //                     }
-    //                 }
-    //             }
-    //         });
-    //     }
-    //
-    //
-    //
-    // });
-
-
-
-
 
     $('.customerMenuIcon').on('click', function () {
         $('.popUpImgContainer').toggle();
@@ -128,3 +69,63 @@
     });
 
 })();
+
+function blabla(available, exists, imageUrl, title, filmID) {
+
+    // e.stopPropagation();
+    // e.preventDefault();
+
+    if(exists) {
+        if(!available){
+            $.alert({
+                useBootstrap: false,
+                columnClass: 'small',
+                animationBounce: 2.0,
+                closeAnimation: 'scale',
+                type: 'orange',
+                theme: 'material',
+                title: 'VARNING!',
+                content: 'FILMEN ÄR REDAN UTHYRD',
+            });
+        } else {
+            $.confirm({
+                useBootstrap: false,
+                columnClass: 'small',
+                animationBounce: 2.0,
+                closeAnimation: 'scale',
+                type: 'orange',
+                theme: 'material',
+                title: 'BEKRÄFTA',
+                content: '<div class="just-flex"><img class="confirm-img" src="' + imageUrl + '" /><span class="confirm-title"><div>' + title + '</div></span></div>' +
+                '<form method="POST" action="/rentalInfo/rentFilm">' +
+                '    <input type="hidden" value="' + filmID + '" id="filmID3" name="filmID3">' +
+                '</form>'
+                ,
+                buttons: {
+                    formSubmit: {
+                        text: 'OK',
+                        btnClass: 'btn-orange',
+                        action: function () {
+                            debugger;
+                            this.$content.find('form').trigger('submit');
+                        }
+                    },
+                    cancel: function () {
+                        text: 'AVBRYT'
+                    }
+                }
+            });
+        }
+    } else {
+        $.alert({
+            useBootstrap: false,
+            columnClass: 'small',
+            animationBounce: 2.0,
+            closeAnimation: 'scale',
+            type: 'orange',
+            theme: 'material',
+            title: 'VARNING!',
+            content: 'FELAKTIGT FILM-ID',
+        });
+    }
+}

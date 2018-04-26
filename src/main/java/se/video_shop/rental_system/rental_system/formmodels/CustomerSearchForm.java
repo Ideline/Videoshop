@@ -8,36 +8,36 @@ import javax.validation.constraints.Size;
 public class CustomerSearchForm implements Validator {
 
     //@Size(min=11, max=11)
-    private String socialSecurityNumber;
+    private String ssn;
     @Size(max=50)
-    private String firstName;
+    private String fName;
     @Size(max=50)
-    private String lastName;
+    private String lName;
 
-    public String getSocialSecurityNumber() {
-        return socialSecurityNumber;
+    public String getSsn() {
+        return ssn;
     }
 
-    public CustomerSearchForm setSocialSecurityNumber(String socialSecurityNumber) {
-        this.socialSecurityNumber = socialSecurityNumber;
+    public CustomerSearchForm setSsn(String ssn) {
+        this.ssn = ssn;
         return this;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFName() {
+        return fName;
     }
 
-    public CustomerSearchForm setFirstName(String firstName) {
-        this.firstName = firstName;
+    public CustomerSearchForm setFName(String fName) {
+        this.fName = fName;
         return this;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLName() {
+        return lName;
     }
 
-    public CustomerSearchForm setLastName(String lastName) {
-        this.lastName = lastName;
+    public CustomerSearchForm setLName(String lName) {
+        this.lName = lName;
         return this;
     }
 
@@ -52,9 +52,9 @@ public class CustomerSearchForm implements Validator {
 
         CustomerSearchForm formData = (CustomerSearchForm)o;
 
-        if(formData.getSocialSecurityNumber().length() != 0 &&
-                formData.getSocialSecurityNumber().length() != 11) {
-            errors.rejectValue("socialSecurityNumber", "validation_error.ssn");
+        if(formData.getSsn().length() != 0 &&
+                formData.getSsn().length() != 11) {
+            errors.rejectValue("ssn", "validation_error.ssn");
         }
     }
 }

@@ -35,13 +35,13 @@ public class RentalSystemApplication {
 
         return args -> {
 
-            LocalDate releaseDate1 = LocalDate.of(2018, 01, 01);
-            LocalDate releaseDate2 = LocalDate.of(2018, 02, 01);
-
-            Customer c1 = new Customer("811221-3940","Anna-Karin","Friberg", "Fersens väg 4", "211 42","Malmö","Sweden", "0721869005","akarinwest@gmail.com");
-            Customer c2 = new Customer("880401-4767","Robin","Larsson", "Birger jarlsgatan 41D", "216 11","Malmö","Sweden", "0700392267","Robin@gmail.com");
-            customerRepository.save(c1);
-            customerRepository.save(c2);
+//            LocalDate releaseDate1 = LocalDate.of(2018, 01, 01);
+//            LocalDate releaseDate2 = LocalDate.of(2018, 02, 01);
+//
+//            Customer c1 = new Customer("811221-3940","Anna-Karin","Friberg", "Fersens väg 4", "211 42","Malmö","Sweden", "0721869005","akarinwest@gmail.com");
+//            Customer c2 = new Customer("880401-4767","Robin","Larsson", "Birger jarlsgatan 41D", "216 11","Malmö","Sweden", "0700392267","Robin@gmail.com");
+//            customerRepository.save(c1);
+//            customerRepository.save(c2);
 
 /*
             FilmInfo filmInfo1 = new FilmInfo("Film1", "Komedi", "Bästa filmen", releaseDate1, "DVD");

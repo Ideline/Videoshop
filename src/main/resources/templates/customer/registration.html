@@ -81,44 +81,41 @@
 <main class="infoMain">
     <nav class="navigationField2">
         <div class="headerLinks">
-            <div><a class="headerLink" th:href="@{/customer/searchandregister}">KUND</a></div>
             <div><a class="headerLink" th:href="@{/film/search}">SÖK FILM</a></div>
+            <div><a class="headerLink" th:href="@{/customer/searchandregister}">KUND</a></div>
             <div><a class="headerLink" th:href="@{/film/register}">NY FILM</a></div>
             <div><a class="headerLink" th:href="@{/rentalInfo/overdue}">FÖRSENADE FILMER</a></div>
+            <div><a class="headerLink" th:href="@{/user/logout}">LOGGA UT</a></div>
         </div>
     </nav>
         <section class="searchSection">
-            <!--<form class="searchForm" method="POST" th:object="${customerSearchForm}">-->
             <form class="searchForm" method="POST" th:action="@{/customer/search}" th:object="${customerSearchForm}">
                 <div class="searchColumns">
                     <div>
                         <p>SÖK PÅ PERSONNUMMER</p>
-                        <input type="text" th:field="*{socialSecurityNumber}" class="search-input" id="socialSecurityNumber"
-                               name="socialSecurityNumber" placeholder="Personnummer">
+                        <input type="text" th:field="*{ssn}" class="search-input" id="ssn"
+                               name="ssn" placeholder="Personnummer">
                         <span class="alert"
-                              th:if="${#fields.hasErrors('socialSecurityNumber')}"
-                              th:errors="*{socialSecurityNumber}">Fel fel</span>
+                              th:if="${#fields.hasErrors('ssn')}"
+                              th:errors="*{ssn}">Fel fel</span>
                     </div>
                     <div>
                         <p>SÖK PÅ FÖRNAMN</p>
-                        <input type="text" th:field="*{firstName}" class="search-input" id="firstName"
-                               name="firstName" placeholder="Förnamn">
+                        <input type="text" th:field="*{fName}" class="search-input" id="fName"
+                               name="fName" placeholder="Förnamn">
                         <span class="alert"
-                              th:if="${#fields.hasErrors('firstName')}"
-                              th:errors="*{firstName}">Fel fel</span>
+                              th:if="${#fields.hasErrors('fName')}"
+                              th:errors="*{fName}">Fel fel</span>
                     </div>
                     <div>
                         <p>SÖK PÅ EFTERNAMN</p>
-                        <input type="text" th:field="*{lastName}" class="search-input" id="lastName"
-                               name="lastName" placeholder="Efternamn">
+                        <input type="text" th:field="*{lName}" class="search-input" id="lName"
+                               name="lName" placeholder="Efternamn">
                         <span class="alert"
-                              th:if="${#fields.hasErrors('lastName')}"
-                              th:errors="*{lastName}">Fel fel</span>
+                              th:if="${#fields.hasErrors('lName')}"
+                              th:errors="*{lName}">Fel fel</span>
                     </div>
                 </div>
-                <!--<a class="submit search-button"-->
-                   <!--th:href="@{/customer/{productNumber}/delete/{filmID}(productNumber=${filmInfo.getProductNumber()}, filmID=${film.getFilmID()})}">-->
-                    <!--<span>SÖK</span></a>-->
                 <button type="submit" class="submit search-button">SÖK</button>
             </form>
         </section>
@@ -127,8 +124,7 @@
                 <div layout:fragment="content">
                     <div>
                         <div class="">
-                            <!--<form method="POST" th:object="${registrationForm}">-->
-                            <form method="POST" th:action="@{/customer/register}" th:object="${registrationForm}">
+                            <form method="POST" th:action="@{/customer/searchandregister}" th:object="${registrationForm}">
                                 <p>REGISTRERA NY KUND</p>
                                 <div class="formContent">
                                     <div class="formColumns">

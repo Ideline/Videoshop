@@ -66,12 +66,14 @@ public class CustomerController {
     @GetMapping("/logout")
     public String logOutCustomer(HttpSession session, HttpServletRequest request) {
 
+
         Customer customer = (Customer)session.getAttribute("customer");
         String ssn = customer.getSocialSecurityNumber();
         session.removeAttribute("customer");
         String referer = request.getHeader("Referer").replace("http://www.bortakvall.com", "");
 
-        if(referer.equals("/customer/" + ssn)){
+        if(referer.equals("/customer/" + ssn) || referer.equals("/rentalInfo/customerFilms") ||
+                referer.equals("/rentalHistory/customerFilms") || referer.equals("/rentalInfo/rentFilm")){
             return "redirect:/customer/searchandregister";
         }
 
@@ -248,9 +250,9 @@ public class CustomerController {
 
         customerSearchForm.validate(customerSearchForm, result);
 
-        int ssnLenght = customerSearchForm.getSocialSecurityNumber().length();
-        int firstNameLenght = customerSearchForm.getFirstName().length();
-        int lastNameLenght = customerSearchForm.getLastName().length();
+        int ssnLenght = customerSearchForm.getSsn().length();
+        int firstNameLenght = customerSearchForm.getFName().length();
+        int lastNameLenght = customerSearchForm.getLName().length();
 
         if (result.hasErrors()) {
             return "customer/search";
@@ -262,9 +264,9 @@ public class CustomerController {
             List<Customer> searchResults = new ArrayList<>();
 
 
-            searchResults.add(customerRepository.findBySocialSecurityNumber(customerSearchForm.getSocialSecurityNumber()));
+            searchResults.add(customerRepository.findBySocialSecurityNumber(customerSearchForm.getSsn()));
             model.addAttribute("searchResults", searchResults);
-            model.addAttribute("searchWords", customerSearchForm.getSocialSecurityNumber());
+            model.addAttribute("searchWords", customerSearchForm.getSsn());
 
             return "customer/searchResult";
 
@@ -272,13 +274,13 @@ public class CustomerController {
 
             List<Customer> searchResults = new ArrayList<>();
 
-            String searchWords = customerSearchForm.getFirstName() + " " + customerSearchForm.getLastName();
+            String searchWords = customerSearchForm.getFName() + " " + customerSearchForm.getLName();
 
             if (firstNameLenght != 0) {
-                searchResults = addSearchResults(searchResults, "firstName", customerSearchForm.getFirstName());
+                searchResults = addSearchResults(searchResults, "fName", customerSearchForm.getFName());
             }
             if (lastNameLenght != 0) {
-                searchResults = addSearchResults(searchResults, "lastName", customerSearchForm.getLastName());
+                searchResults = addSearchResults(searchResults, "lName", customerSearchForm.getLName());
             }
             model.addAttribute("searchResults", searchResults);
             model.addAttribute("searchWords", searchWords);
@@ -291,13 +293,13 @@ public class CustomerController {
 
     public List<Customer> addSearchResults(List<Customer> searchResults, String type, String name) {
 
-        if (type.equals("firstName")) {
+        if (type.equals("fName")) {
 
             for (Customer c : customerRepository.findAllByFirstName(name)) {
                 searchResults.add(c);
             }
 
-        } else if (type.equals("lastName")) {
+        } else if (type.equals("lName")) {
 
             for (Customer c : customerRepository.findAllByLastName(name)) {
                 searchResults.add(c);

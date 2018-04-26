@@ -1027,3 +1027,37 @@ th, td {
 .home {
     background-color: black;
 }
+
+.login {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 300px;
+}
+
+.login input {
+    height: 30px;
+    width: 250px;
+    padding-left: 5px;
+}
+
+.loginButton {
+    width: 260px !important;
+    height: 40px !important;
+}
+
+.confirm-title {
+    font-size: 18px;
+    font-family: Arial;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/*.confirm-img {*/
+    /*height: 400px !important;*/
+/*}*/
+
+/*.confirm-img img {*/
+    /*width: 100%;*/
+/*}*/
